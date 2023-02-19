@@ -2,11 +2,16 @@
   <div>
     <h1>bleu<span :style="{ 'font-weight': 'normal' }">122</span></h1>
     <Alphanav direction="vertical" @selected="getLetter" />
+    <v-row>
+      <v-col cols="7">
+        <v-text-field
+          v-model="name"
+          label="Message"
+          type="text"
+        ></v-text-field>
+      </v-col>
+    </v-row>
     <table>
-      <tr>
-        <th>Name</th>
-        <th>Phone</th>
-      </tr>
       <tr v-for="contact in filteredContacts" :key="contact.id">
         <td>{{ contact.name }}</td>
         <td>{{ contact.phone }}</td>
@@ -25,6 +30,7 @@ export default {
   },
   data() {
     return {
+      name: "",
       selectedLetter: "",
       contacts: [
         { id: 1, name: "John Doe", phone: "555-555-5555" },
@@ -35,17 +41,31 @@ export default {
   },
   computed: {
     filteredContacts() {
-      if (!this.selectedLetter) {
-        return this.contacts;
+      if (this.selectedLetter) {
+        return this.contacts.filter((contact) =>
+          contact.name
+            .toLowerCase()
+            .startsWith(this.selectedLetter.toLowerCase())
+        );
       }
-      return this.contacts.filter((contact) =>
-        contact.name.toLowerCase().startsWith(this.selectedLetter.toLowerCase())
-      );
+      if (this.name) {
+        return this.contacts.filter((contact) =>
+          contact.name
+            .toLowerCase()
+            .startsWith(this.name.toLowerCase())
+        );
+      }
+      return this.contacts;
     },
   },
   methods: {
     getLetter(chosenLetter) {
       this.selectedLetter = chosenLetter.value;
+    },
+    searchByName(name) {
+      if (name !== "") {
+        console.log(name);
+      }
     },
   },
 };
