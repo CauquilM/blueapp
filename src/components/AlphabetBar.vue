@@ -7,11 +7,9 @@
         <th>Name</th>
         <th>Phone</th>
       </tr>
-      <tr v-for="user in filteredUsers" :key="user.id">
-        <td>{{ user.name }}</td>
-        <td>{{ user.phone }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.role }}</td>
+      <tr v-for="contact in filteredContacts" :key="contact.id">
+        <td>{{ contact.name }}</td>
+        <td>{{ contact.phone }}</td>
       </tr>
     </table>
   </div>
@@ -19,7 +17,6 @@
 
 <script>
 import Alphanav from "vue-alphanav";
-import { mapActions, mapState } from "vuex";
 
 export default {
   name: "AlphabetBar",
@@ -29,27 +26,27 @@ export default {
   data() {
     return {
       selectedLetter: "",
+      contacts: [
+        { id: 1, name: "John Doe", phone: "555-555-5555" },
+        { id: 2, name: "Jane Doe", phone: "555-555-5556" },
+        { id: 3, name: "Jim Smith", phone: "555-555-5557" },
+      ],
     };
   },
-  beforeMount() {
-    this.getUsers();
-  },
   computed: {
-    filteredUsers() {
+    filteredContacts() {
       if (!this.selectedLetter) {
-        return this.users;
+        return this.contacts;
       }
-      return this.users.filter((user) =>
-        user.name.toLowerCase().startsWith(this.selectedLetter.toLowerCase())
+      return this.contacts.filter((contact) =>
+        contact.name.toLowerCase().startsWith(this.selectedLetter.toLowerCase())
       );
     },
-    ...mapState(["users"]),
   },
   methods: {
     getLetter(chosenLetter) {
       this.selectedLetter = chosenLetter.value;
     },
-    ...mapActions(["getUsers"]),
   },
 };
 </script>
