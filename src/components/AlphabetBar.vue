@@ -1,21 +1,61 @@
 <template>
-  <div>
-    <h1>bleu<span :style="{ 'font-weight': 'normal' }">122</span></h1>
-    <Alphanav direction="vertical" @selected="getLetter" />
-    <v-row>
-      <v-col cols="7">
-        <v-text-field v-model="name" label="Message" type="text"></v-text-field>
-      </v-col>
-    </v-row>
-    <table>
-      <tr v-for="user in filteredUsers" :key="user.id">
-        <td>{{ user.name }}</td>
-        <td>{{ user.phone }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.role }}</td>
-      </tr>
-    </table>
-  </div>
+  <v-row justify="center">
+    <v-col cols="11">
+      <v-row justify="center">
+        <v-col class="mt-5" cols="auto">
+          <v-img contain max-width="180" src="../images/logo.svg"/>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="11">
+          <v-text-field
+            v-model="name"
+            label="Message"
+            type="text"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="11">
+          <v-card
+            class="mb-10"
+            max-width="400"
+            outlined
+            v-for="user in filteredUsers"
+            :key="user.id"
+          >
+            <v-row justify="center" align="center">
+              <v-col cols="2">
+                <v-avatar color="red" size="50">
+                  <v-img contain src="../images/icons8-user-80.png" alt="" />
+                </v-avatar>
+              </v-col>
+              <v-col cols="9"
+                ><v-card-title>{{ user.name }}</v-card-title>
+
+                <v-card-text>
+                  <p>{{ user.phone }}</p>
+                  <p>{{ user.email }}</p>
+                  <v-chip class="mr-1" small>{{ user.role }}</v-chip>
+                  <v-chip
+                    small
+                    class="mr-1"
+                    v-for="(skill, index) in user.skills"
+                    :key="index"
+                    :color="getRandomColor()"
+                    >{{ skill }}</v-chip
+                  >
+                </v-card-text></v-col
+              >
+            </v-row>
+          </v-card>
+        </v-col>
+        <v-col cols="1">
+          <Alphanav direction="vertical" @selected="getLetter" />
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -31,14 +71,9 @@ export default {
     return {
       name: "",
       selectedLetter: "",
-      contacts: [
-        { id: 1, name: "John Doe", phone: "555-555-5555" },
-        { id: 2, name: "Jane Doe", phone: "555-555-5556" },
-        { id: 3, name: "Jim Smith", phone: "555-555-5557" },
-      ],
     };
   },
-  beforeMount() {
+  created() {
     this.getUsers();
   },
   computed: {
@@ -67,6 +102,9 @@ export default {
       if (name !== "") {
         console.log(name);
       }
+    },
+    getRandomColor() {
+      return "#" + Math.floor(Math.random() * 16777215).toString(16);
     },
     ...mapActions(["getUsers"]),
   },
