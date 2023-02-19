@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>bleu<span :style="{ 'font-weight': 'normal' }">122</span></h1>
-    <Alphanav direction="vertical"/>
+    <Alphanav direction="vertical" @selected="getLetter" />
     <table>
       <tr>
         <th>Name</th>
@@ -46,7 +46,6 @@ export default {
   methods: {
     getLetter(chosenLetter) {
       this.selectedLetter = chosenLetter.value;
-      console.log(this.selectedLetter);
     },
   },
 };
