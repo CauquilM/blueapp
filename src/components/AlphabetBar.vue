@@ -4,17 +4,15 @@
     <Alphanav direction="vertical" @selected="getLetter" />
     <v-row>
       <v-col cols="7">
-        <v-text-field
-          v-model="name"
-          label="Message"
-          type="text"
-        ></v-text-field>
+        <v-text-field v-model="name" label="Message" type="text"></v-text-field>
       </v-col>
     </v-row>
     <table>
-      <tr v-for="contact in filteredContacts" :key="contact.id">
-        <td>{{ contact.name }}</td>
-        <td>{{ contact.phone }}</td>
+      <tr v-for="user in filteredUsers" :key="user.id">
+        <td>{{ user.name }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
       </tr>
     </table>
   </div>
@@ -22,6 +20,7 @@
 
 <script>
 import Alphanav from "vue-alphanav";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "AlphabetBar",
@@ -39,24 +38,26 @@ export default {
       ],
     };
   },
+  beforeMount() {
+    this.getUsers();
+  },
   computed: {
-    filteredContacts() {
+    filteredUsers() {
       if (this.selectedLetter) {
-        return this.contacts.filter((contact) =>
+        return this.users.filter((contact) =>
           contact.name
             .toLowerCase()
             .startsWith(this.selectedLetter.toLowerCase())
         );
       }
       if (this.name) {
-        return this.contacts.filter((contact) =>
-          contact.name
-            .toLowerCase()
-            .startsWith(this.name.toLowerCase())
+        return this.users.filter((contact) =>
+          contact.name.toLowerCase().startsWith(this.name.toLowerCase())
         );
       }
-      return this.contacts;
+      return this.users;
     },
+    ...mapState(["users"]),
   },
   methods: {
     getLetter(chosenLetter) {
@@ -67,6 +68,7 @@ export default {
         console.log(name);
       }
     },
+    ...mapActions(["getUsers"]),
   },
 };
 </script>
