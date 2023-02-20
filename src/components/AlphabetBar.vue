@@ -52,7 +52,11 @@
           </v-card>
         </v-col>
         <v-col cols="1">
-          <Alphanav direction="vertical" @selected="getLetter" />
+          <Alphanav
+            direction="vertical"
+            @selected="getLetter"
+            style="{background: #f6f6f6;}"
+          />
         </v-col>
       </v-row>
     </v-col>
@@ -122,3 +126,12 @@ export default {
   },
 };
 </script>
+<style>
+  .alphanav[data-v-49c2182e]{
+    background-color: #f6f6f6;
+  }
+
+  .alphanav li a[data-v-49c2182e]{
+    color: black;
+  }
+</style>

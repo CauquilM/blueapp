@@ -1,5 +1,7 @@
 <template>
-  <v-app>
+  <v-app style="
+    background: #f6f6f6;
+  ">
     <HomeView />
   </v-app>
 </template>
