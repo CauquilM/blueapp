@@ -1,23 +1,21 @@
 <template>
-  <v-row justify="center">
-    <v-col cols="7">
+  <v-row justify="center" v-resize="modifyWindowSize">
+    <!-- All -->
+    <v-col :cols="12" :md="7" :sm="10">
       <v-row justify="center">
         <v-col class="mt-5" cols="auto">
           <v-img contain max-width="180" src="../images/logo.svg" />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-text-field
-            outlined
-            v-model="name"
-            label="Message"
-            type="text"
-          ></v-text-field>
+      <!-- Search Bar -->
+      <v-row justify="center">
+        <v-col cols="10" class="mt-5">
+          <v-text-field outlined v-model="name" label="Chercher" type="text" />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="11">
+      <!-- Main -->
+      <v-row justify="center">
+        <v-col cols="10">
           <v-card
             class="mb-7"
             max-width="600"
@@ -25,38 +23,53 @@
             v-for="user in filteredUsers"
             :key="user.id"
           >
-            <v-row justify="center" align="center">
-              <v-col cols="auto">
-                <v-avatar color="red" size="80">
+            <!-- Cards -->
+            <v-row justify="center" align="center" no-gutters>
+              <v-col cols="2">
+                <v-avatar color="red" :size="windowSize - 12 > 550 ? 80 : 60">
                   <v-img contain src="../images/icons8-user-80.png" alt="" />
                 </v-avatar>
               </v-col>
-              <v-col cols="auto"
+              <v-col cols="9"
                 ><v-card-title>{{ user.name }}</v-card-title>
 
-                <v-card-text>
+                <v-card-text v-if="windowSize - 12 > 465">
                   <p>{{ user.phone }}</p>
                   <p>{{ user.email }}</p>
-                  <v-chip class="mr-1" small>{{ user.role }}</v-chip>
-                  <v-chip
-                    small
-                    class="mr-1"
-                    v-for="(skill, index) in user.skills"
-                    :key="index"
-                    :color="getRandomColor()"
-                    >{{ skill }}</v-chip
-                  >
-                </v-card-text></v-col
-              >
+                  <v-chip small class="mr-1">{{
+                    user.role
+                  }}</v-chip>
+                    <v-chip
+                      small
+                      class="mr-1"
+                      v-for="(skill, index) in user.skills"
+                      :key="index"
+                      :color="getRandomColor()"
+                      >{{ skill }}</v-chip
+                    >
+                </v-card-text>
+                <v-card-text v-else>
+                  <p>{{ user.phone }}</p>
+                  <p>{{ user.email }}</p>
+                  <v-chip x-small class="mr-1">{{
+                    user.role
+                  }}</v-chip>
+                    <v-chip
+                      x-small
+                      class="mr-1"
+                      v-for="(skill, index) in user.skills"
+                      :key="index"
+                      :color="getRandomColor()"
+                      >{{ skill }}</v-chip
+                    >
+                </v-card-text>
+                </v-col>
             </v-row>
           </v-card>
         </v-col>
+        <!-- Alphanav -->
         <v-col cols="1">
-          <Alphanav
-            direction="vertical"
-            @selected="getLetter"
-            style="{background: #f6f6f6;}"
-          />
+          <Alphanav direction="vertical" @selected="getLetter" />
         </v-col>
       </v-row>
     </v-col>
@@ -65,7 +78,7 @@
 
 <script>
 import Alphanav from "vue-alphanav";
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "AlphabetBar",
@@ -74,13 +87,12 @@ export default {
   },
   data() {
     return {
+      windowSize: 0,
       name: "",
       selectedLetter: "",
     };
   },
-  created() {
-    this.getUsers();
-  },
+
   computed: {
     filteredUsers() {
       if (this.selectedLetter) {
@@ -100,6 +112,10 @@ export default {
     ...mapState(["users"]),
   },
   methods: {
+    modifyWindowSize() {
+      this.windowSize = window.innerWidth;
+      console.log("Window => ", this.windowSize);
+    },
     getLetter(chosenLetter) {
       this.selectedLetter = chosenLetter.value;
     },
@@ -122,16 +138,15 @@ export default {
       const b = parseInt(hex.substr(4, 2), 16);
       return (r * 299 + g * 587 + b * 114) / 1000;
     },
-    ...mapActions(["getUsers"]),
   },
 };
 </script>
 <style>
-  .alphanav[data-v-49c2182e]{
-    background-color: #f6f6f6;
-  }
+.alphanav[data-v-49c2182e] {
+  background-color: #f6f6f6;
+}
 
-  .alphanav li a[data-v-49c2182e]{
-    color: black;
-  }
+.alphanav li a[data-v-49c2182e] {
+  color: black;
+}
 </style>
