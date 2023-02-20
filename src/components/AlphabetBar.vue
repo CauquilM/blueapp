@@ -1,14 +1,15 @@
 <template>
   <v-row justify="center">
-    <v-col cols="11">
+    <v-col cols="7">
       <v-row justify="center">
         <v-col class="mt-5" cols="auto">
-          <v-img contain max-width="180" src="../images/logo.svg"/>
+          <v-img contain max-width="180" src="../images/logo.svg" />
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="11">
+        <v-col cols="12">
           <v-text-field
+            outlined
             v-model="name"
             label="Message"
             type="text"
@@ -18,19 +19,19 @@
       <v-row>
         <v-col cols="11">
           <v-card
-            class="mb-10"
-            max-width="400"
+            class="mb-7"
+            max-width="600"
             outlined
             v-for="user in filteredUsers"
             :key="user.id"
           >
             <v-row justify="center" align="center">
-              <v-col cols="2">
-                <v-avatar color="red" size="50">
+              <v-col cols="auto">
+                <v-avatar color="red" size="80">
                   <v-img contain src="../images/icons8-user-80.png" alt="" />
                 </v-avatar>
               </v-col>
-              <v-col cols="9"
+              <v-col cols="auto"
                 ><v-card-title>{{ user.name }}</v-card-title>
 
                 <v-card-text>
@@ -104,7 +105,18 @@ export default {
       }
     },
     getRandomColor() {
-      return "#" + Math.floor(Math.random() * 16777215).toString(16);
+      let color;
+      do {
+        color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+      } while (this.colorBrightness(color) < 150);
+      return color;
+    },
+    colorBrightness(color) {
+      const hex = color.slice(1);
+      const r = parseInt(hex.substr(0, 2), 16);
+      const g = parseInt(hex.substr(2, 2), 16);
+      const b = parseInt(hex.substr(4, 2), 16);
+      return (r * 299 + g * 587 + b * 114) / 1000;
     },
     ...mapActions(["getUsers"]),
   },
