@@ -36,34 +36,30 @@
                 <v-card-text v-if="windowSize - 12 > 465">
                   <p>{{ user.phone }}</p>
                   <p>{{ user.email }}</p>
-                  <v-chip small class="mr-1">{{
-                    user.role
-                  }}</v-chip>
-                    <v-chip
-                      small
-                      class="mr-1"
-                      v-for="(skill, index) in user.skills"
-                      :key="index"
-                      :color="getRandomColor()"
-                      >{{ skill }}</v-chip
-                    >
+                  <v-chip small class="mr-1">{{ user.role }}</v-chip>
+                  <v-chip
+                    small
+                    class="mr-1"
+                    v-for="(skill, index) in user.skills"
+                    :key="index"
+                    :color="getRandomColor()"
+                    >{{ skill }}</v-chip
+                  >
                 </v-card-text>
                 <v-card-text v-else>
                   <p>{{ user.phone }}</p>
                   <p>{{ user.email }}</p>
-                  <v-chip x-small class="mr-1">{{
-                    user.role
-                  }}</v-chip>
-                    <v-chip
-                      x-small
-                      class="mr-1"
-                      v-for="(skill, index) in user.skills"
-                      :key="index"
-                      :color="getRandomColor()"
-                      >{{ skill }}</v-chip
-                    >
+                  <v-chip x-small class="mr-1">{{ user.role }}</v-chip>
+                  <v-chip
+                    x-small
+                    class="mr-1"
+                    v-for="(skill, index) in user.skills"
+                    :key="index"
+                    :color="getRandomColor()"
+                    >{{ skill }}</v-chip
+                  >
                 </v-card-text>
-                </v-col>
+              </v-col>
             </v-row>
           </v-card>
         </v-col>
@@ -103,8 +99,16 @@ export default {
         );
       }
       if (this.name) {
+        if (this.name[0] == ":") {
+          console.log("coucou");
+          return this.users.filter((contact) =>
+            contact.skills.every((skill) =>
+              console.log("1", skill)
+            )
+          );
+        }
         return this.users.filter((contact) =>
-          contact.name.toLowerCase().startsWith(this.name.toLowerCase())
+          contact.name.toLowerCase().includes(this.name.toLowerCase())
         );
       }
       return this.users;
@@ -114,7 +118,6 @@ export default {
   methods: {
     modifyWindowSize() {
       this.windowSize = window.innerWidth;
-      console.log("Window => ", this.windowSize);
     },
     getLetter(chosenLetter) {
       this.selectedLetter = chosenLetter.value;
