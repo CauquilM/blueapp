@@ -20,44 +20,28 @@
             class="mb-7"
             max-width="600"
             outlined
-            v-for="user in filteredUsers"
-            :key="user.id"
+            v-for="personne in filteredUsers"
+            :key="personne.index"
           >
             <!-- Cards -->
             <v-row justify="center" align="center" no-gutters>
               <v-col cols="2">
                 <v-avatar color="red" :size="windowSize - 12 > 550 ? 80 : 60">
-                  <v-img contain src="../images/icons8-user-80.png" alt="" />
+                  <v-img contain alt="" :src="personne.image" />
                 </v-avatar>
               </v-col>
               <v-col cols="9"
-                ><v-card-title>{{ user.name }}</v-card-title>
+                ><v-card-title>{{ personne.prenom }}</v-card-title>
 
                 <v-card-text v-if="windowSize - 12 > 465">
-                  <p>{{ user.phone }}</p>
-                  <p>{{ user.email }}</p>
-                  <v-chip small class="mr-1">{{ user.role }}</v-chip>
-                  <v-chip
-                    small
-                    class="mr-1"
-                    v-for="(skill, index) in user.skills"
-                    :key="index"
-                    :color="getRandomColor()"
-                    >{{ skill }}</v-chip
-                  >
+                  <p>{{ personne.birthday }}</p>
+                  <p>{{ personne.mail }}</p>
+                  <v-chip small class="mr-1">{{ personne.technos }}</v-chip>
                 </v-card-text>
                 <v-card-text v-else>
-                  <p>{{ user.phone }}</p>
-                  <p>{{ user.email }}</p>
-                  <v-chip x-small class="mr-1">{{ user.role }}</v-chip>
-                  <v-chip
-                    x-small
-                    class="mr-1"
-                    v-for="(skill, index) in user.skills"
-                    :key="index"
-                    :color="getRandomColor()"
-                    >{{ skill }}</v-chip
-                  >
+                  <p>{{ personne.birthday }}</p>
+                  <p>{{ personne.mail }}</p>
+                  <v-chip x-small class="mr-1">{{ personne.technos }}</v-chip>
                 </v-card-text>
               </v-col>
             </v-row>
@@ -92,28 +76,20 @@ export default {
   computed: {
     filteredUsers() {
       if (this.selectedLetter) {
-        return this.users.filter((contact) =>
-          contact.name
+        return this.personnes.filter((contact) =>
+          contact.prenom
             .toLowerCase()
             .startsWith(this.selectedLetter.toLowerCase())
         );
       }
       if (this.name) {
-        if (this.name[0] == ":") {
-          console.log("coucou");
-          return this.users.filter((contact) =>
-            contact.skills.every((skill) =>
-              console.log("1", skill)
-            )
-          );
-        }
-        return this.users.filter((contact) =>
-          contact.name.toLowerCase().includes(this.name.toLowerCase())
+        return this.personnes.filter((contact) =>
+          contact.prenom.toLowerCase().includes(this.name.toLowerCase())
         );
       }
-      return this.users;
+      return this.personnes;
     },
-    ...mapState(["users"]),
+    ...mapState(["personnes"]),
   },
   methods: {
     modifyWindowSize() {
